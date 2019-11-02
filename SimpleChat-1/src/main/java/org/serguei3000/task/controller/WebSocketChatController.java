@@ -1,0 +1,34 @@
+package org.serguei3000.task.controller;
+
+import org.serguei3000.task.model.WebSocketChatMessage;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.stereotype.Controller;
+
+
+
+@Controller
+public class WebSocketChatController {
+	
+	//serg3000 аннотация  @SendTo перенаправляет сообщения сервису, 
+	//который делает всю работу по организации чата, уведомляя всех участников
+	//по получению сообщения
+	
+	@MessageMapping("/chat.sendMessage")
+	@SendTo("/topic/javainuse")
+	public WebSocketChatMessage sendMessage(@Payload WebSocketChatMessage webSocketChatMessage) {
+		return webSocketChatMessage;
+	}
+
+	//serg3000 получили уведомление скрипта для добавления пользователя к сессии
+	@MessageMapping("/chat.newUser")
+	@SendTo("/topic/javainuse")
+	public WebSocketChatMessage newUser(@Payload WebSocketChatMessage webSocketChatMessage,
+			SimpMessageHeaderAccessor headerAccessor) {
+		headerAccessor.getSessionAttributes().put("username", webSocketChatMessage.getSender());
+		return webSocketChatMessage;
+	}
+
+}
