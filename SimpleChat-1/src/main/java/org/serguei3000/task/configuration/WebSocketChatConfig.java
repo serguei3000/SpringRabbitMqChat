@@ -1,8 +1,11 @@
 package org.serguei3000.task.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -23,4 +26,19 @@ public class WebSocketChatConfig implements WebSocketMessageBrokerConfigurer {
 				.setClientPasscode("guest");    //serg3000 "/topic" - префикс маппинга для брокера 
 
 	}
+	
+	
+	 //serg3000 без этого бина у меня приложение не видело шаблонов, не всегда нужно, зависит от версии библиотек Spring
+    //@Bean
+    //public ClassLoaderTemplateResolver yourTemplateResolver() {
+        //ClassLoaderTemplateResolver configurer = new ClassLoaderTemplateResolver();
+        //configurer.setPrefix("templates/");
+        //configurer.setSuffix(".html");
+        //configurer.setTemplateMode(TemplateMode.HTML);
+        //configurer.setCharacterEncoding("UTF-8");
+        //configurer.setOrder(0);  
+        //configurer.setCacheable(false);
+        //configurer.setCheckExistence(true);
+       //return configurer;
+    //}
 }
